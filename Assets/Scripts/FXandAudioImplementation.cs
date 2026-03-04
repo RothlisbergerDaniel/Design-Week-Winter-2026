@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class FXandAudioImplementation : MonoBehaviour
@@ -5,6 +6,7 @@ public class FXandAudioImplementation : MonoBehaviour
     [SerializeField] GameObject suck;
     [SerializeField] ParticleSystem blow;
     [SerializeField] GameObject cam;
+    [NonSerialized]
     public bool sucking;
 
     // Update is called once per frame

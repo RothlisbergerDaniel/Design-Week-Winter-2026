@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerBreath : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class PlayerBreath : MonoBehaviour
     //private CharacterController controller;
     private Rigidbody rb;
     private PlayerMovement pm;
+    [SerializeField]
+    private Slider chargeBar;
+    private FXandAudioImplementation FXAudio; // Grab the FX and Audio Script for Implementation
 
     public float suckStrength = 1;
     public float blowStrength = 1; // how much force to pull objects in with and blow them out with
@@ -25,8 +29,6 @@ public class PlayerBreath : MonoBehaviour
     private float doSuck = 0; // float so that we can set independent suck strength later
     private float doBlow = 0; // float so that we can set independent blow strength later
 
-    public FXandAudioImplementation FXAudio; // Grab the FX and Audio Script for Implementation
-
     [SerializeField]
     private LayerMask movableObjects;
 
@@ -42,6 +44,7 @@ public class PlayerBreath : MonoBehaviour
         //controller = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
         pm = GetComponent<PlayerMovement>();
+        FXAudio = GetComponent<FXandAudioImplementation>();
     }
 
     // Update is called once per frame
@@ -79,12 +82,13 @@ public class PlayerBreath : MonoBehaviour
         {
             doSuck = 0; // cancel suck
             doBlow = 1; // use this to queue up an exhale
-            breathTimer = -2; // prevent spamming
+            breathTimer = -suckCooldown; // prevent spamming
 
             FXAudio.sucking = false; // Sucking FX OFF
             FXAudio.Blow(); // Play Blow FX
         }
 
+        chargeBar.value = (breathTimer / maxCharge) * 2; // update breath charge bar
 
     }
 
@@ -98,18 +102,26 @@ public class PlayerBreath : MonoBehaviour
             {
                 for (int i = 0; i < hits.Length; i++)
                 {
-                    Vector3 hp = hits[i].transform.position;
-
-                    Vector3 suckDir = (transform.position - new Vector3(hp.x, hp.y- hits[i].transform.localScale.y, hp.z)).normalized; // subtract scale from hit position to make suck direction more accurate
-                    if (suckDir.y > 0) { suckDir.y *= gravReduction; }
-
-                    if (!((new Vector2(transform.position.x,transform.position.z) - new Vector2(hp.x, hp.z)).magnitude <= underfootThreshold && transform.position.y - hp.y < underfootThreshold * 3)) // as long as the object isn't too close horizontally and is below player
+                    if (hits[i].transform.gameObject.layer == 6)
                     {
-                        hits[i].rigidbody.AddForce(suckDir * suckStrength, ForceMode.Force); // only apply velocity if the object is far enough away so we can't fly
+                        Vector3 hp = hits[i].transform.position;
+
+                        Vector3 suckDir = (transform.position - new Vector3(hp.x, hp.y - hits[i].transform.localScale.y, hp.z)).normalized; // subtract scale from hit position to make suck direction more accurate
+                        if (suckDir.y > 0) { suckDir.y *= gravReduction; }
+
+                        if (!((new Vector2(transform.position.x, transform.position.z) - new Vector2(hp.x, hp.z)).magnitude <= underfootThreshold && transform.position.y - hp.y < underfootThreshold * 3)) // as long as the object isn't too close horizontally and is below player
+                        {
+                            hits[i].rigidbody.AddForce(suckDir * suckStrength, ForceMode.Force); // only apply velocity if the object is far enough away so we can't fly
+                        }
+
+                        if ((transform.position - hp).magnitude <= underfootThreshold * 2) { hits[i].rigidbody.linearVelocity = Vector3.zero; } // stop them from moving if too close to the player
                     }
-
-                    if ((transform.position - hp).magnitude <= underfootThreshold*2) { hits[i].rigidbody.linearVelocity = Vector3.zero; } // stop them from moving if too close to the player
-
+                    if (hits[i].transform.gameObject.layer == 7)
+                    {
+                        FanPlatform fp = hits[i].transform.gameObject.GetComponent<FanPlatform>();
+                        fp.returnTimer = fp.returnTime * fp.getTravelTimer();
+                        fp.returnTimer = fp.returnTimer - Time.deltaTime;
+                    }
                     
                 }
             }
@@ -132,16 +144,24 @@ public class PlayerBreath : MonoBehaviour
             {
                 for (int i = 0; i < hits.Length; i++)
                 {
-                    Vector3 hp = hits[i].transform.position;
+                    if (hits[i].transform.gameObject.layer == 6)
+                    {
+                        Vector3 hp = hits[i].transform.position;
 
-                    Vector3 blowDir = (cam.transform.forward).normalized; // blow everything in the direction of aim
-                    //if (blowDir.y < 0) { blowDir.y *= gravReduction; }
+                        Vector3 blowDir = (cam.transform.forward).normalized; // blow everything in the direction of aim
+                                                                              //if (blowDir.y < 0) { blowDir.y *= gravReduction; }
 
-                    //if (!((new Vector2(transform.position.x, transform.position.z) - new Vector2(hp.x, hp.z)).magnitude <= underfootThreshold && transform.position.y - hp.y < underfootThreshold * 3)) // as long as the object isn't too close horizontally and is below player
-                    //{
+                        //if (!((new Vector2(transform.position.x, transform.position.z) - new Vector2(hp.x, hp.z)).magnitude <= underfootThreshold && transform.position.y - hp.y < underfootThreshold * 3)) // as long as the object isn't too close horizontally and is below player
+                        //{
                         hits[i].rigidbody.linearVelocity = new Vector3(); // reset velocity
                         hits[i].rigidbody.AddForce(blowDir * blowStrength, ForceMode.Impulse); // only apply velocity if the object is far enough away so we can't fly
-                    //}
+                                                                                               //}
+                    }
+                    if (hits[i].transform.gameObject.layer == 7)
+                    {
+                        FanPlatform fp = hits[i].transform.gameObject.GetComponent<FanPlatform>();
+                        fp.travelTimer = fp.travelTime - fp.travelTime * fp.getTravelTimer();
+                    }
 
 
                 }

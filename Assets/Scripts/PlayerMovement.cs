@@ -25,6 +25,8 @@ public class PlayerMovement : MonoBehaviour
     //private bool jumpInput;
     private float jumpBuffer = 0.15f; // jump buffering
     private float jumpBufferTime = 0;
+    private float coyoteTime = 0.25f;
+    private float coyoteTimer = 0;
 
     public float lookSensitivity = 3;
     private Vector2 rotation = Vector2.zero;
@@ -37,6 +39,9 @@ public class PlayerMovement : MonoBehaviour
         Time.fixedDeltaTime = (1f / 60f);
         rb = GetComponent<Rigidbody>(); // get attached rigidbody (we'll be using a capsule collider for 3D movement
         vel = new Vector3(); // reset velocity
+
+        rotation.y = transform.rotation.y;
+
 #if UNITY_EDITOR
         lookSensitivity *= 1;
 #else
@@ -50,6 +55,7 @@ public class PlayerMovement : MonoBehaviour
         doLook();
 
         jumpBufferTime = Mathf.Max(0, jumpBufferTime - Time.deltaTime);
+        
 
         pInput.x = Input.GetAxisRaw("Horizontal"); // we use two separate operations here as it's slightly
         pInput.y = Input.GetAxisRaw("Vertical");   // more efficient than creating a new Vector2 every frame
@@ -67,17 +73,19 @@ public class PlayerMovement : MonoBehaviour
         if (grounded)
         {
             vel += Vector3.Normalize(transform.rotation * new Vector3(pInput.x, 0, pInput.y)) * speed * Time.deltaTime; // adjust player velocity, normalize increase to ensure consistency
+            coyoteTimer = coyoteTime;
         } else
         {
             vel += Vector3.Normalize(transform.rotation * new Vector3(pInput.x, 0, pInput.y)) * airSpeed * Time.deltaTime; // lower aerial acceleration
+            coyoteTimer = Mathf.Max(0, coyoteTimer - Time.fixedDeltaTime);
         }
 
 
-            vel += new Vector3(0, -gravity, 0) * Time.deltaTime; // apply gravity
+        vel += new Vector3(0, -gravity, 0) * Time.deltaTime; // apply gravity
         RaycastHit rh;
-        if (Physics.SphereCast(transform.position + new Vector3(0, 1, 0), 0.15f, Vector3.down, out rh, transform.localScale.y)) { vel.y = 0; grounded = true; } else { grounded = false; jumpBufferTime = 0; } // ground detection
+        if (Physics.SphereCast(transform.position + new Vector3(0, 1, 0), 0.15f, Vector3.down, out rh, transform.localScale.y)) { vel.y = 0; grounded = true; } else { grounded = false; } // ground detection
 
-        if (jumpBufferTime > 0 && grounded)
+        if (jumpBufferTime > 0 && (grounded || coyoteTimer > 0))
         {
             jumpBufferTime = 0;
             vel.y += jumpStrength;
