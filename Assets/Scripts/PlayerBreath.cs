@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerBreath : MonoBehaviour
@@ -18,8 +19,8 @@ public class PlayerBreath : MonoBehaviour
     public float minBlowCharge = 1; // minimum charge required to blow
     public float suckCooldown = 1; // time before the player can suck again after blowing
     private float breathTimer = 0; // internal variable to track how long the player has held their breath for
-    private float doSuck = 0; // float so that we can set independent suck strength later
-    private float doBlow = 0; // float so that we can set independent blow strength later
+    [NonSerialized] public float doSuck = 0; // float so that we can set independent suck strength later
+    [NonSerialized] public float doBlow = 0; // float so that we can set independent blow strength later
 
     [SerializeField]
     private LayerMask movableObjects;
