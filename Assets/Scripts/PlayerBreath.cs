@@ -5,10 +5,13 @@ public class PlayerBreath : MonoBehaviour
 {
     [SerializeField]
     private GameObject cam; // used to aim for the player's sucking and blowing
-    private CharacterController controller;
+    //private CharacterController controller;
+    private Rigidbody rb;
+    private PlayerMovement pm;
 
     public float suckStrength = 1;
     public float blowStrength = 1; // how much force to pull objects in with and blow them out with
+    public float yellRecoilStrength = 1; // how much force to launch the player backwards with
 
     public float suckRange = 5;
     public float suckRadius = 2;
@@ -34,7 +37,9 @@ public class PlayerBreath : MonoBehaviour
     void Start()
     {
         breathTimer = 0;
-        controller = GetComponent<CharacterController>();
+        //controller = GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        pm = GetComponent<PlayerMovement>();
     }
 
     // Update is called once per frame
@@ -104,6 +109,14 @@ public class PlayerBreath : MonoBehaviour
         if (doBlow > 0)
         {
             doBlow = 0; // reset
+
+            if (!pm.grounded)
+            {
+                Vector3 ctf = cam.transform.forward;
+                pm.vel -= new Vector3(ctf.x * 2, 0, ctf.z * 2) * yellRecoilStrength; // ADD to horizontal for speed chaining
+                pm.vel.y = ctf.y * -yellRecoilStrength; // SET vertical for double-jumping
+            }
+
             RaycastHit[] hits = Physics.SphereCastAll(transform.position + (cam.transform.forward * blowRadius), blowRadius, cam.transform.forward, blowRange, movableObjects);
 
             if (hits.Length > 0)

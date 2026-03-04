@@ -9,17 +9,22 @@ public class PlayerMovement : MonoBehaviour
     public Rigidbody rb;
 
     public float speed = 1;
+    public float airSpeed = 0.5f;
     public float friction = 0.2f; // amount to reduce speed by each frame; closer to 0 is slipperier but greater than 1 will INCREASE speed instead
+    public float airFriction = 0.1f; // amount to reduce speed by when in the air
     [NonSerialized]
     public Vector3 vel;
 
     public float jumpStrength = 1;
     public float gravity = 1;
-    private bool grounded;
+    [NonSerialized]
+    public bool grounded;
 
 
     private Vector2 pInput; // player movement input
-    private bool jumpInput; // pounce input
+    //private bool jumpInput;
+    private float jumpBuffer = 0.15f; // jump buffering
+    private float jumpBufferTime = 0;
 
     public float lookSensitivity = 3;
     private Vector2 rotation = Vector2.zero;
@@ -28,6 +33,8 @@ public class PlayerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        Application.targetFrameRate = 60;
+        Time.fixedDeltaTime = (1f / 60f);
         rb = GetComponent<Rigidbody>(); // get attached rigidbody (we'll be using a capsule collider for 3D movement
         vel = new Vector3(); // reset velocity
 #if UNITY_EDITOR
@@ -42,9 +49,11 @@ public class PlayerMovement : MonoBehaviour
     {
         doLook();
 
+        jumpBufferTime = Mathf.Max(0, jumpBufferTime - Time.deltaTime);
+
         pInput.x = Input.GetAxisRaw("Horizontal"); // we use two separate operations here as it's slightly
         pInput.y = Input.GetAxisRaw("Vertical");   // more efficient than creating a new Vector2 every frame
-        if (Input.GetButtonDown("Jump")) { jumpInput = true; } // queue this up in update to ensure responsiveness
+        if (Input.GetButtonDown("Jump")) { jumpBufferTime = jumpBuffer; } // queue this up in update to ensure responsiveness
 
         if (Input.GetKey("escape")) // quit game
         {
@@ -55,19 +64,33 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         
-
-        vel += Vector3.Normalize(transform.rotation * new Vector3(pInput.x, 0, pInput.y)) * speed * Time.deltaTime; // adjust player velocity, normalize increase to ensure consistency
-        vel += new Vector3(0, -gravity, 0) * Time.deltaTime; // apply gravity
-        RaycastHit rh;
-        if (Physics.SphereCast(transform.position + new Vector3(0, 1, 0), 0.15f, Vector3.down, out rh, transform.localScale.y)) { vel.y = 0; grounded = true; } else { grounded = false; jumpInput = false; } // ground detection
-
-        if (jumpInput && grounded)
+        if (grounded)
         {
-            jumpInput = false;
+            vel += Vector3.Normalize(transform.rotation * new Vector3(pInput.x, 0, pInput.y)) * speed * Time.deltaTime; // adjust player velocity, normalize increase to ensure consistency
+        } else
+        {
+            vel += Vector3.Normalize(transform.rotation * new Vector3(pInput.x, 0, pInput.y)) * airSpeed * Time.deltaTime; // lower aerial acceleration
+        }
+
+
+            vel += new Vector3(0, -gravity, 0) * Time.deltaTime; // apply gravity
+        RaycastHit rh;
+        if (Physics.SphereCast(transform.position + new Vector3(0, 1, 0), 0.15f, Vector3.down, out rh, transform.localScale.y)) { vel.y = 0; grounded = true; } else { grounded = false; jumpBufferTime = 0; } // ground detection
+
+        if (jumpBufferTime > 0 && grounded)
+        {
+            jumpBufferTime = 0;
             vel.y += jumpStrength;
         }
 
-        vel = new Vector3(vel.x * (1 - friction), vel.y, vel.z * (1 - friction)); //reduce horizontal velocity based on specified friction
+        if (grounded)
+        {
+            vel = new Vector3(vel.x * (1 - friction), vel.y, vel.z * (1 - friction)); //reduce horizontal velocity based on specified friction
+        } else
+        {
+            vel = new Vector3(vel.x * (1 - airFriction), vel.y, vel.z * (1 - airFriction)); //accelerate more slowly in the air but have lower friction
+        }
+
         rb.linearVelocity = vel; //update player velocity
     }
 
@@ -75,7 +98,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rotation.y += Input.GetAxis("Mouse X");
         rotation.x += -Input.GetAxis("Mouse Y") * lookSensitivity;
-        rotation.x = Mathf.Clamp(rotation.x, -60f, 60f);
+        rotation.x = Mathf.Clamp(rotation.x, -80f, 80f);
         transform.eulerAngles = new Vector2(0, rotation.y) * lookSensitivity;
         cam.transform.localRotation = Quaternion.Euler(rotation.x, 0, 0);
     }
