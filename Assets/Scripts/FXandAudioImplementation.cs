@@ -2,17 +2,19 @@ using UnityEngine;
 
 public class FXandAudioImplementation : MonoBehaviour
 {
-    public PlayerBreath playerBreath;
-    public GameObject suck;
-    public ParticleSystem blow;
-    public GameObject cam;
+    [SerializeField] GameObject suck;
+    [SerializeField] ParticleSystem blow;
+    [SerializeField] GameObject cam;
+    public bool sucking;
 
     // Update is called once per frame
     void Update()
     {
         suck.transform.rotation = cam.transform.rotation;
         blow.transform.rotation = cam.transform.rotation;
-        if (playerBreath.doSuck > 0)
+
+
+        if (sucking)
         {
             if (!suck.gameObject.activeSelf)
             {
@@ -27,9 +29,9 @@ public class FXandAudioImplementation : MonoBehaviour
             }
         }
 
-        if (playerBreath.doBlow > 0)
-        {
+    }
+    public void Blow()
+    {
             blow.Play();
-        }
     }
 }

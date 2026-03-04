@@ -22,8 +22,10 @@ public class PlayerBreath : MonoBehaviour
     public float minBlowCharge = 1; // minimum charge required to blow
     public float suckCooldown = 1; // time before the player can suck again after blowing
     private float breathTimer = 0; // internal variable to track how long the player has held their breath for
-    [NonSerialized] public float doSuck = 0; // float so that we can set independent suck strength later
-    [NonSerialized] public float doBlow = 0; // float so that we can set independent blow strength later
+    private float doSuck = 0; // float so that we can set independent suck strength later
+    private float doBlow = 0; // float so that we can set independent blow strength later
+
+    public FXandAudioImplementation FXAudio; // Grab the FX and Audio Script for Implementation
 
     [SerializeField]
     private LayerMask movableObjects;
@@ -60,6 +62,8 @@ public class PlayerBreath : MonoBehaviour
                 breathTimer = maxCharge; // cap breath
             }
 
+            FXAudio.sucking = true; // Sucking FX ON
+
         } else if (breathTimer > 0)
         {
             doSuck = 0; // cancel suck
@@ -68,12 +72,17 @@ public class PlayerBreath : MonoBehaviour
                 doBlow = 1; // use this to queue up an exhale
             }*/
             breathTimer = Mathf.Max(breathTimer - Time.deltaTime, 0); // reduce charge over time
+
+            FXAudio.sucking = false; // Sucking FX OFF
         }
         if (Input.GetMouseButton(1) && breathTimer >= minBlowCharge)
         {
             doSuck = 0; // cancel suck
             doBlow = 1; // use this to queue up an exhale
             breathTimer = -2; // prevent spamming
+
+            FXAudio.sucking = false; // Sucking FX OFF
+            FXAudio.Blow(); // Play Blow FX
         }
 
 
