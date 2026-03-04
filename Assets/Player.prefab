@@ -370,8 +370,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 5550442290111287424}
   speed: 120
+  airSpeed: 60
   friction: 0.15
-  jumpStrength: 22
+  airFriction: 0.05
+  jumpStrength: 20
   gravity: 40
   lookSensitivity: 1.5
 --- !u!114 &5177909746301706868
@@ -389,6 +391,7 @@ MonoBehaviour:
   cam: {fileID: 5550442290111287424}
   suckStrength: 10
   blowStrength: 25
+  yellRecoilStrength: 30
   suckRange: 15
   suckRadius: 2
   blowRange: 5
