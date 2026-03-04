@@ -4,6 +4,7 @@ public class PlayerBreath : MonoBehaviour
 {
     [SerializeField]
     private GameObject cam; // used to aim for the player's sucking and blowing
+    private CharacterController controller;
 
     public float suckStrength = 1;
     public float blowStrength = 1; // how much force to pull objects in with and blow them out with
@@ -32,6 +33,7 @@ public class PlayerBreath : MonoBehaviour
     void Start()
     {
         breathTimer = 0;
+        controller = GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -59,7 +61,7 @@ public class PlayerBreath : MonoBehaviour
             {
                 doBlow = 1; // use this to queue up an exhale
             }*/
-            breathTimer -= Time.deltaTime; // reduce charge over time
+            breathTimer = Mathf.Max(breathTimer - Time.deltaTime, 0); // reduce charge over time
         }
         if (Input.GetMouseButton(1) && breathTimer >= minBlowCharge)
         {
@@ -90,6 +92,8 @@ public class PlayerBreath : MonoBehaviour
                     {
                         hits[i].rigidbody.AddForce(suckDir * suckStrength, ForceMode.Force); // only apply velocity if the object is far enough away so we can't fly
                     }
+
+                    if ((transform.position - hp).magnitude <= underfootThreshold*2) { hits[i].rigidbody.linearVelocity = Vector3.zero; } // stop them from moving if too close to the player
 
                     
                 }
