@@ -22,7 +22,8 @@ public class EndFlag : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(SceneToLoad, LoadSceneMode.Single);
+
+        if (other.CompareTag("Player")) { SceneManager.LoadScene(SceneToLoad, LoadSceneMode.Single); }
         //LoadScene(SceneToLoad);
     }
 

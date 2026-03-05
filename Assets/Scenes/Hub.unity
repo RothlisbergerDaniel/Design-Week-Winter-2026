@@ -843,8 +843,23 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 8162908699978366021, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
+      propertyPath: blow
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162908699978366021, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
+      propertyPath: suck
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162908699978366021, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
+      propertyPath: playerAudio
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 8162908699978366021, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 8432392069889102507, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
+    - {fileID: 2782775513685666989, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
