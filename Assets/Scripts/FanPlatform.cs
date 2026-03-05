@@ -10,6 +10,8 @@ public class FanPlatform : MonoBehaviour
     public float returnTime; // how long it takes the platform to return to start (either when sucked or automatically)
     public bool autoReturn; // if the platform should return on its own
 
+    public Animator fanAnimator;
+
     [NonSerialized]
     public float travelTimer;
     [NonSerialized]
@@ -22,13 +24,14 @@ public class FanPlatform : MonoBehaviour
         platform.transform.localPosition = start;
         travelTimer = 0;
         returnTimer = 0;
+        fanAnimator.speed = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
     }
+
 
     private void FixedUpdate()
     {
@@ -59,6 +62,8 @@ public class FanPlatform : MonoBehaviour
         tPos.z = start.z + ((target.z - start.z) * percent); // set target position
         tPos += transform.position;
         platform.transform.position = tPos;
+
+        fanAnimator.speed = percent;
     }
 
     public float getTravelTimer()
