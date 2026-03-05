@@ -6,8 +6,10 @@ public class FXandAudioImplementation : MonoBehaviour
     [SerializeField] GameObject suck;
     [SerializeField] ParticleSystem blow;
     [SerializeField] GameObject cam;
-    [NonSerialized]
-    public bool sucking;
+    [SerializeField] AudioSource playerAudio;
+    [SerializeField] AudioClip[] audios;
+    [NonSerialized] public bool sucking;
+    private bool suckingLoop;
 
     // Update is called once per frame
     void Update()
@@ -22,9 +24,32 @@ public class FXandAudioImplementation : MonoBehaviour
             {
                 suck.SetActive(true);
             }
+
+            if (!suckingLoop)
+            {
+                playerAudio.clip = audios[0];
+                playerAudio.Play();
+                suckingLoop = true;
+            }
+            else if (!playerAudio.isPlaying)
+            {
+                playerAudio.loop = true;
+                playerAudio.clip = audios[1];
+                playerAudio.Play();
+            }
+
         }
         else
         {
+            if (suckingLoop)
+            {
+                playerAudio.loop = false;
+                playerAudio.clip = audios[2];
+                playerAudio.Play();
+                suckingLoop = false;
+            }
+
+
             if (suck.gameObject.activeSelf)
             {
                 suck.SetActive(false);
@@ -34,6 +59,14 @@ public class FXandAudioImplementation : MonoBehaviour
     }
     public void Blow()
     {
-            blow.Play();
+        sucking = false;
+        suckingLoop = false;
+
+        int currentScream = UnityEngine.Random.Range(3, 5);
+        playerAudio.loop = false;
+        playerAudio.clip = audios[currentScream];
+        playerAudio.Play();
+
+        blow.Play();
     }
 }
