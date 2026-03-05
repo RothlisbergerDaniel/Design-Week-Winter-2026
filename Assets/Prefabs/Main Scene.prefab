@@ -29702,8 +29702,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 6c663b49a22719642bfbe89e22406061, type: 2}
-  m_sharedMaterial: {fileID: 4296547665022767360, guid: 6c663b49a22719642bfbe89e22406061, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -54692,7 +54692,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7515139929789992566
 RectTransform:
   m_ObjectHideFlags: 0
@@ -59788,6 +59788,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 702634365339012053}
     m_Modifications:
+    - target: {fileID: 2320594500252556427, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2320594500252556427, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5177909746301706868, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
       propertyPath: FXAudio
       value: 
@@ -59839,7 +59847,7 @@ PrefabInstance:
     - target: {fileID: 6745044318821046961, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 8400000, guid: 00b35d7ab511f714d96710931209fbbf, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 8016576461275910648, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
       propertyPath: m_Name
       value: Player
@@ -59889,7 +59897,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 3dca85adec1c6754ca5b01c3fea09be3, type: 3}
   - {fileID: 8300000, guid: a8042516568bd8145aefc8883fa930f0, type: 3}
   - {fileID: 8300000, guid: 089b0f888ef4a544f8a711ebd5c34801, type: 3}
-  sucking: 0
 --- !u!1 &2949077693246403087 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5550442290111287424, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}

@@ -161,6 +161,7 @@ public class PlayerBreath : MonoBehaviour
                     {
                         FanPlatform fp = hits[i].transform.gameObject.GetComponent<FanPlatform>();
                         fp.travelTimer = fp.travelTime - fp.travelTime * fp.getTravelTimer();
+                        fp.returnTimer = 0;
                     }
 
 
