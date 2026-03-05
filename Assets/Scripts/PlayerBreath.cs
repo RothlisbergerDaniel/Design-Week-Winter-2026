@@ -4,8 +4,7 @@ using UnityEngine.UI;
 
 public class PlayerBreath : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject cam; // used to aim for the player's sucking and blowing
+    public GameObject cam; // used to aim for the player's sucking and blowing
     //private CharacterController controller;
     private Rigidbody rb;
     private PlayerMovement pm;
@@ -26,8 +25,8 @@ public class PlayerBreath : MonoBehaviour
     public float minBlowCharge = 1; // minimum charge required to blow
     public float suckCooldown = 1; // time before the player can suck again after blowing
     private float breathTimer = 0; // internal variable to track how long the player has held their breath for
-    private float doSuck = 0; // float so that we can set independent suck strength later
-    private float doBlow = 0; // float so that we can set independent blow strength later
+    [NonSerialized] public float doSuck = 0; // float so that we can set independent suck strength later
+    [NonSerialized] public float doBlow = 0; // float so that we can set independent blow strength later
 
     [SerializeField]
     private LayerMask movableObjects;
@@ -107,7 +106,8 @@ public class PlayerBreath : MonoBehaviour
                         Vector3 hp = hits[i].transform.position;
 
                         Vector3 suckDir = (transform.position - new Vector3(hp.x, hp.y - hits[i].transform.localScale.y, hp.z)).normalized; // subtract scale from hit position to make suck direction more accurate
-                        if (suckDir.y > 0) { suckDir.y *= gravReduction; }
+                        if (suckDir.y > 0 && !hits[i].transform.gameObject.CompareTag("hook")) { suckDir.y *= gravReduction; }
+                        if (hits[i].transform.gameObject.CompareTag("hook")) { suckDir *= hits[i].transform.gameObject.GetComponent<ZiplineHook>().returnSpeed; } // very hacky but it means the player can pull the hook towards them properly (and quickly)
 
                         if (!((new Vector2(transform.position.x, transform.position.z) - new Vector2(hp.x, hp.z)).magnitude <= underfootThreshold && transform.position.y - hp.y < underfootThreshold * 3)) // as long as the object isn't too close horizontally and is below player
                         {

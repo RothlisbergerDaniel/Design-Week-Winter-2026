@@ -39240,7 +39240,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 75, y: 75}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5461595942224144128
 CanvasRenderer:
@@ -39270,7 +39270,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: e5666efda127bdf45a508fe25d6372a9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 602b6be193c76d2429a9072a906d5483, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -44149,7 +44149,7 @@ RectTransform:
   m_GameObject: {fileID: 5385909553281239966}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4500408454831858349}
@@ -44187,7 +44187,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 508ebfd06b7320a4380a0a4db6990f69, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8b145f92d915213478e0b5561be45282, type: 3}
   m_Type: 0
   m_PreserveAspect: 1
   m_FillCenter: 1
@@ -54457,6 +54457,8 @@ MonoBehaviour:
   suck: {fileID: 2546982649358155072}
   blow: {fileID: 1929696353897643688}
   cam: {fileID: 5550442290111287424}
+  playerAudio: {fileID: 0}
+  audios: []
 --- !u!54 &3761734653148936371
 Rigidbody:
   m_ObjectHideFlags: 0

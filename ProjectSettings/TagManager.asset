@@ -8,6 +8,7 @@ TagManager:
   - fan
   - fanPlatform
   - TutorialArea
+  - hook
   layers:
   - Default
   - TransparentFX

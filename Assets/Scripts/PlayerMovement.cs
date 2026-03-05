@@ -20,6 +20,9 @@ public class PlayerMovement : MonoBehaviour
     [NonSerialized]
     public bool grounded;
 
+    [NonSerialized]
+    public bool onHook; // if the player is hooked onto a zipline or not
+
 
     private Vector2 pInput; // player movement input
     //private bool jumpInput;
@@ -81,13 +84,16 @@ public class PlayerMovement : MonoBehaviour
         }
 
 
-        vel += new Vector3(0, -gravity, 0) * Time.deltaTime; // apply gravity
+        if (!onHook) { vel += new Vector3(0, -gravity, 0) * Time.deltaTime; } // apply gravity
         RaycastHit rh;
-        if (Physics.SphereCast(transform.position + new Vector3(0, 1, 0), 0.15f, Vector3.down, out rh, transform.localScale.y)) { vel.y = 0; grounded = true; } else { grounded = false; } // ground detection
+        bool hit = Physics.SphereCast(transform.position + new Vector3(0, 1, 0), 0.15f, Vector3.down, out rh, transform.localScale.y);
+        if ((hit && !rh.transform.gameObject.CompareTag("TutorialArea")) && vel.y <= 0) { vel.y = 0; grounded = true; } else { grounded = false; } // ground detection - FIXED mistaken tutorial area detection
 
         if (jumpBufferTime > 0 && (grounded || coyoteTimer > 0))
         {
             jumpBufferTime = 0;
+            coyoteTimer = 0;
+            grounded = false;
             vel.y += jumpStrength;
         }
 
