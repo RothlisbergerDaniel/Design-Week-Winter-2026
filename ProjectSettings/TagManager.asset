@@ -9,6 +9,7 @@ TagManager:
   - fanPlatform
   - TutorialArea
   - hook
+  - checkpoint
   layers:
   - Default
   - TransparentFX
