@@ -13,6 +13,9 @@ public class PlayerTutorial : MonoBehaviour
     }
     private void OnTriggerExit(Collider other)
     {
-        tutorialText.text = null; 
+        if (other.gameObject.tag == "TutorialArea")
+        {
+            tutorialText.text = null;
+        }
     }
 }

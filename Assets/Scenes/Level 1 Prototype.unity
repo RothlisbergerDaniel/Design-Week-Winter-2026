@@ -7179,7 +7179,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3967586f283d50442a08a96df3bb0187, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tutorialText: BLOW will launch you away from where you AIm
+  tutorialText: BLOW will launch you away from where you aim when used in the air
 --- !u!1001 &936768687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18060,7 +18060,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4468901990337961572, guid: c74fe37be2f0eeb4f9eb3d67e7c28e8d, type: 3}
       propertyPath: tutorialText
-      value: Suck towards Ziplines, release to Zipline
+      value: Suck towards Ziplines, release to zip
       objectReference: {fileID: 0}
     - target: {fileID: 5723258964001039565, guid: c74fe37be2f0eeb4f9eb3d67e7c28e8d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -19897,6 +19897,18 @@ PrefabInstance:
     - target: {fileID: 8016576461275910648, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 8207063728586328932, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8207063728586328932, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8207063728586328932, guid: 497ce15b200b1ac4db6f250ed1fd2108, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

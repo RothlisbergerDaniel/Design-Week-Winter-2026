@@ -54561,9 +54561,9 @@ MonoBehaviour:
   suckStrength: 10
   blowStrength: 25
   yellRecoilStrength: 30
-  suckRange: 15
-  suckRadius: 2
-  blowRange: 5
+  suckRange: 25
+  suckRadius: 3
+  blowRange: 25
   blowRadius: 2
   maxCharge: 2
   minBlowCharge: 1

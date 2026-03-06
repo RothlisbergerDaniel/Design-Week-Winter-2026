@@ -49658,7 +49658,7 @@ GameObject:
   - component: {fileID: 954934324355183833}
   - component: {fileID: 2453617416918421949}
   - component: {fileID: 9166780172195737788}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: Player Trigger
   m_TagString: Player
   m_Icon: {fileID: 0}
