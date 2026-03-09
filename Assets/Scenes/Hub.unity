@@ -214,6 +214,7 @@ MonoBehaviour:
   m_VerticalAlignment: 1024
   m_textAlignment: 65535
   m_characterSpacing: 0
+  m_characterHorizontalScale: 1
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -1082,7 +1083,7 @@ PrefabInstance:
     - target: {fileID: 4067081696778991678, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 8400000, guid: 00b35d7ab511f714d96710931209fbbf, type: 2}
     - target: {fileID: 5034588102230687236, guid: c18f9241c7c9700488843ec3a521de30, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
